@@ -6,6 +6,7 @@ After cloning the repository, open download.ps1 and fill in the Configuration Va
 - **$bearertoken**: The access token returned from https://api.twitter.com/oauth2/token (see https://developer.twitter.com/en/docs/basics/authentication/guides/bearer-tokens)
 - **$queryparams**: Your query parameters for the initial query, starting with ?. For example, "?q=nasa&result_type=popular" (see https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html)
 - **$maxrequests**: The maximum number of times you want the script to call the API to get a batch of tweets. Subsequent calls are made with the query parameters returned in the next_results field of search_metadata of the previous response
+- **$extendedmode** (Added in 0.2): When set to true, appends "&tweet_mode=extended" to the end of queries. This is needed because the tweet_mode parameter is dropped from next_results
 
 ## Usage
 Run download.ps1 from the directory where you want the output JSON to be saved. The script creates a series of files named "tweets-(incrementing number)-(max_id from the response).json" each containing the JSON output from one query.

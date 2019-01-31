@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.1
+# Version: 0.2
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -8,6 +8,7 @@
 $bearertoken = # ADD YOUR BEARER TOKEN HERE
 $queryparams = # ADD YOUR QUERY STRING HERE
 $maxrequests = # SET THE MAXIMUM NUMBER OF REQUESTS TO MAKE
+$extendedmode = true # true = &tweet_mode=extended appended to query, needed because next_results will not include it otherwise
 
 
 
@@ -17,7 +18,8 @@ $maxrequests = # SET THE MAXIMUM NUMBER OF REQUESTS TO MAKE
 
 # Initialize script variables
 $count = 0
-$nextquery = $queryparams
+$nextquery = If ($extendedmode) {$queryparams + "&tweet_mode=extended"} Else {$queryparams}
+
 
 $bearerheader = "Bearer " + $bearertoken
 
@@ -38,6 +40,6 @@ Do
     $count++
 
     # Figure out what the next query needs to be to get the next set of older tweets
-    $nextquery = $responsejson.search_metadata.next_results
+    $nextquery = If ($extendedmode) {$responsejson.search_metadata.next_results + "&tweet_mode=extended"} Else {$responsejson.search_metadata.next_results}
 
 } While (($responsejson.statuses.Count -gt 0) -and ($count -lt $maxrequests) -and ($nextquery))
