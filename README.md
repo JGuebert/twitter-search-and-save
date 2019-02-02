@@ -1,7 +1,7 @@
 # twitter-search-and-save
-PowerShell scripts that locally saves the JSON responses returned from the Twitter Search API and can run local searches against them
+PowerShell scripts that locally save the JSON responses returned from the Twitter Search API and can run local searches against them
 
-## Setup
+## Setup (Optional)
 ### Tweet Downloads
 After cloning the repository, open download.ps1 and fill in the Configuration Variables at the top of the script:
 - **$bearertoken**: The access token returned from https://api.twitter.com/oauth2/token (see https://developer.twitter.com/en/docs/basics/authentication/guides/bearer-tokens)
@@ -14,6 +14,8 @@ Open analyze.ps1 and fill in the Configuration Variables at the top of the scrip
 - **$search**: The string to search across all tweets for in either the full_text or text fields
 
 ## Usage
+If skipping setting the variables as outlined in the Setup section, the scripts will prompt for values at runtime.
+
 Run download.ps1 from the directory where you want the output JSON to be saved. The script creates a series of files named "tweets-(incrementing number)-(max_id from the response).json" each containing the JSON output from one query.
 
 Run analyze.ps1 from the directory with the output of download.ps1. The script will output to the console any tweets that contain text matching the string configured.
