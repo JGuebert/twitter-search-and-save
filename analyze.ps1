@@ -5,13 +5,16 @@
 
 # Configuration Variables
 
-$search =  # SET TO STRING TO SEARCH FOR IN TWEETS
+$search = "" # SET TO STRING TO SEARCH FOR IN TWEETS
 
 
 
 ##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
 
 
+
+# Prompt user for input if not set in script
+if(!$search) { $search = Read-Host "Text to search" }
 
 # Load the tweet files from the current directory
 $tweetfiles = Get-ChildItem -Path tweets-*.json
