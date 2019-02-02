@@ -5,15 +5,21 @@
 
 # Configuration Variables
 
-$bearertoken = # ADD YOUR BEARER TOKEN HERE
-$queryparams = # ADD YOUR QUERY STRING HERE
-$maxrequests = # SET THE MAXIMUM NUMBER OF REQUESTS TO MAKE
-$extendedmode = true # true = &tweet_mode=extended appended to query, needed because next_results will not include it otherwise
+$bearertoken = "" # ADD YOUR BEARER TOKEN HERE
+$queryparams = "" # ADD YOUR QUERY STRING HERE
+$maxrequests = 0 # SET THE MAXIMUM NUMBER OF REQUESTS TO MAKE
+$extendedmode = $true # true = &tweet_mode=extended appended to query, needed because next_results will not include it otherwise
 
 
 
 ##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
 
+
+
+# Prompt user for input if not set in script
+if(!$bearertoken) { $bearertoken = Read-Host "Bearer token" }
+if(!$queryparams) { $queryparams = Read-Host "Query string (starting with ?)" }
+while($maxrequests -lt 1) { [int]$maxrequests = Read-Host "Max number of API requests" }
 
 
 # Initialize script variables
