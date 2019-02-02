@@ -8,7 +8,6 @@
 $bearertoken = "" # ADD YOUR BEARER TOKEN HERE
 $queryparams = "" # ADD YOUR QUERY STRING HERE
 $maxrequests = 0 # SET THE MAXIMUM NUMBER OF REQUESTS TO MAKE
-$extendedmode = $true # true = &tweet_mode=extended appended to query, needed because next_results will not include it otherwise
 
 
 
@@ -24,8 +23,8 @@ while($maxrequests -lt 1) { [int]$maxrequests = Read-Host "Max number of API req
 
 # Initialize script variables
 $count = 0
-$nextquery = If ($extendedmode) {$queryparams + "&tweet_mode=extended"} Else {$queryparams}
-
+$nextquery = $queryparams
+$extendedmode = If ($queryparams.Contains("tweet_mode=extended")) {$true} Else {$false}
 
 $bearerheader = "Bearer " + $bearertoken
 
