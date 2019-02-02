@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/analyze.ps1
-# Version: 0.1
+# Version: 0.1-interactive
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
