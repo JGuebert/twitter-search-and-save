@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.3
+# Version: 0.3-zip
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -28,6 +28,9 @@ $extendedmode = If ($queryparams.Contains("tweet_mode=extended")) {$true} Else {
 
 $bearerheader = "Bearer " + $bearertoken
 
+# Create directory for output JSON to be stored in, direct output to $null so it doesn't appear in console
+New-Item -ItemType Directory -Force -Path ".\tweets" > $null
+
 Do
 {
     
@@ -38,7 +41,7 @@ Do
     
     # Write the content returned to a file
     $responsejson = $response.Content | ConvertFrom-Json
-    $filepath = ".\tweets-" + $count + "-" + $responsejson.search_metadata.max_id + ".json"
+    $filepath = ".\tweets\tweets-" + $count + "-" + $responsejson.search_metadata.max_id + ".json"
     Out-File $filepath -InputObject $response.Content
 
     #Increment $count for the next time
@@ -48,3 +51,5 @@ Do
     $nextquery = If ($extendedmode) {$responsejson.search_metadata.next_results + "&tweet_mode=extended"} Else {$responsejson.search_metadata.next_results}
 
 } While (($responsejson.statuses.Count -gt 0) -and ($count -lt $maxrequests) -and ($nextquery))
+
+Compress-Archive -Path ".\tweets\*" -DestinationPath ".\output.zip"
