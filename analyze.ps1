@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/analyze.ps1
-# Version: 0.3
+# Version: 0.3.1
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -20,7 +20,7 @@ if(!$archive) { $archive = Read-Host "Path to zip archive, or leave blank to use
 
 # Expand the zip archive if provided
 if($archive) {
-    Remove-Item -Path ".\tweets" -Recurse
+    Remove-Item -Path ".\tweets" -Recurse -ErrorAction Ignore
     Expand-Archive -Path $archive -DestinationPath ".\tweets"
 }
 
