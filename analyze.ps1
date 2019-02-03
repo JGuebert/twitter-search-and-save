@@ -1,11 +1,12 @@
 ﻿# twitter-search-and-save/analyze.ps1
-# Version: 0.2
+# Version: 0.2-zip
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
 # Configuration Variables
 
 $search = "" # SET TO STRING TO SEARCH FOR IN TWEETS
+$archive = "" # PATH TO ZIP ARCHIVE
 
 
 
@@ -15,9 +16,16 @@ $search = "" # SET TO STRING TO SEARCH FOR IN TWEETS
 
 # Prompt user for input if not set in script
 if(!$search) { $search = Read-Host "Text to search" }
+if(!$archive) { $archive = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
 
-# Load the tweet files from the current directory
-$tweetfiles = Get-ChildItem -Path tweets-*.json
+# Expand the zip archive if provided
+if($archive) {
+    Remove-Item -Path ".\tweets" -Recurse
+    Expand-Archive -Path $archive -DestinationPath ".\tweets"
+}
+
+# Load the files from the tweets directory
+$tweetfiles = Get-ChildItem -Path ".\tweets\tweets-*.json"
 
 foreach($file in $tweetfiles) {
     
