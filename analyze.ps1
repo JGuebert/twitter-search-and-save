@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/analyze.ps1
-# Version: 0.3.1
+# Version: 0.3.2
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -44,11 +44,11 @@ foreach($file in $tweetfiles) {
         
             # See if full_text exists (tweets returned in extended mode)
             if($status.full_text) {
-                if($status.full_text.Contains($scanfor)) {$tweettext = $status.full_text}
+                if($status.full_text.ToLower().Contains($scanfor.ToLower())) {$tweettext = $status.full_text}
             }
             # Otherwise we just need to look at the text field
             else {
-                if($status.text.Contains($scanfor)) {$tweettext = $status.text}
+                if($status.text.ToLower().Contains($scanfor.ToLower())) {$tweettext = $status.text}
             }
 
             if($tweettext) {"Tweet from " + $status.user.screen_name + ": " + $tweettext}
