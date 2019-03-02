@@ -55,7 +55,7 @@ Do
     $filepath = ".\tweets\tweets-" + $count + "-" + $responsejson.search_metadata.max_id + ".json"
     Out-File $filepath -InputObject $response.Content
 
-    #Increment $count for the next time
+    # Increment $count for the next time
     $count++
 
     # Figure out what the next query needs to be to get the next set of older tweets
