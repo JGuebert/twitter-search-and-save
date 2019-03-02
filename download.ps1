@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.4
+# Version: 0.5-extended-assistant
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -18,13 +18,24 @@ $maxrequests = 0 # SET THE MAXIMUM NUMBER OF REQUESTS TO MAKE
 # Prompt user for input if not set in script
 if(!$bearertoken) { $bearertoken = Read-Host "Bearer token" }
 if(!$queryparams) { $queryparams = Read-Host "Query string (starting with ?)" }
+
+# If $queryparams does not include tweet_mode, prompt user for if tweet_mode=extended should be used (with default of yes)
+If (!$queryparams.Contains("tweet_mode")) {
+    $extendedanswer = ""
+    Do {
+        $extendedanswer = Read-Host "Do you want tweets returned in extended mode? (Y/n)"
+        if(!$extendedanswer) { $extendedanswer = "Y"}
+    } While (!($extendedanswer.Equals("Y") -or $extendedanswer.Equals("n")))
+
+}
+
 while($maxrequests -lt 1) { [int]$maxrequests = Read-Host "Max number of API requests" }
 
 
 # Initialize script variables
 $count = 0
 $nextquery = $queryparams
-$extendedmode = If ($queryparams.Contains("tweet_mode=extended")) {$true} Else {$false}
+$extendedmode = If ($queryparams.Contains("tweet_mode=extended") -or $extendedanswer.Equals("Y")) {$true} Else {$false}
 
 $bearerheader = "Bearer " + $bearertoken
 
