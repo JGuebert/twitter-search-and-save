@@ -12,14 +12,14 @@
 ##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
 
 
-
+# Load the tweets that are present in the /tweets directory
 $tweetfiles = Get-ChildItem -Path ".\tweets\tweets-*.json"
 
 foreach($file in $tweetfiles) {
 
     $content = Get-Content $file | ConvertFrom-Json
         
-    # Iterate through each status in the file to see if it contains the text
+    # Loop through all of the tweets
     foreach($status in $content.statuses) {
         $tweettext = ""
         
@@ -35,13 +35,14 @@ foreach($file in $tweetfiles) {
                 $tweettext = $status.text
             }
         
-
+            # Make web call to get the sentiment score for the text
             $baseuri = "http://localhost:3000/sentimentScore"
             $requesturi = $baseuri + "?tweet=" + $tweettext
             $response = Invoke-WebRequest -Uri $requesturi
             
             $sentiment = $response.Content | ConvertFrom-Json
 
+            # Only display output if it is above 3 (for positive) or below -3 (for negative) as a way to handle strong signal
             if($sentiment -lt -3) {
                 "NEGATIVE Sentiment of " + $sentiment + ": " + $tweettext
             }
