@@ -5,10 +5,23 @@
 
 ## Requires server/app.js running to return score back from 'sentiment' npm module
 
+[CmdletBinding(DefaultParameterSetName="default")]
 Param(
     [parameter(ValueFromPipeline=$true)]
     [String[]]
-    $Tweets
+    $Tweets,
+
+    [parameter(Mandatory=$true)]
+    [int]
+    $MinSentiment,
+
+    [parameter(Mandatory=$false,ParameterSetName="positive")]
+    [switch]
+    $PositiveOnly,
+
+    [parameter(Mandatory=$false,ParameterSetName="negative")]
+    [switch]
+    $NegativeOnly
 )
 
 # Configuration Variables
@@ -25,12 +38,12 @@ function Get-Sentiment {
     
     $sentiment = $response.Content | ConvertFrom-Json
 
-    # Only display output if it is above 3 (for positive) or below -3 (for negative) as a way to handle strong signal
-    if($sentiment -lt -3) {
+    # Only display output if it is above (for positive) or below (for negative) the $MinSentiment value
+    if(($sentiment -lt -$MinSentiment) -and !($PositiveOnly)) {
         "NEGATIVE Sentiment of " + $sentiment + ": " + $tweettext
     }
 
-    if($sentiment -gt 3) {
+    if($sentiment -gt $MinSentiment -and !($NegativeOnly)) {
         "POSITIVE Sentiment of " + $sentiment + ": " + $tweettext
     }
 }
