@@ -8,7 +8,7 @@
 Param(
     [parameter(ValueFromPipeline=$true)]
     [String[]]
-    $tweets
+    $Tweets
 )
 
 # Configuration Variables
@@ -36,9 +36,9 @@ function Get-Sentiment {
 }
 
 # Use the passed in tweets if given
-if($tweets)
+if($Tweets)
 {
-    foreach($tweettext in $tweets) {
+    foreach($tweettext in $Tweets) {
         Get-Sentiment $tweettext
     }
 }
