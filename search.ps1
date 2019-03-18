@@ -3,6 +3,10 @@
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
+param (
+    [switch]$OutputAsArray
+);
+
 # Configuration Variables
 
 $search = "" # SET TO STRING TO SEARCH FOR IN TWEETS
@@ -11,8 +15,6 @@ $archive = "" # PATH TO ZIP ARCHIVE
 
 
 ##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
-
-
 
 # Prompt user for input if not set in script
 if(!$search) { $search = Read-Host "Text to search" }
@@ -51,8 +53,13 @@ foreach($file in $tweetfiles) {
                 if($status.text.ToLower().Contains($scanfor.ToLower())) {$tweettext = $status.text}
             }
 
-            if($tweettext) {"Tweet from " + $status.user.screen_name + ": " + $tweettext}
+            if($tweettext) {
+                if($OutputAsArray) { $outputarray += ,$tweettext }    
+                else { "Tweet from " + $status.user.screen_name + ": " + $tweettext }
+            }
         }
 
     }
 }
+
+if($OutputAsArray) { ,$outputarray }
