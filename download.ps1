@@ -24,8 +24,8 @@ If (!$queryparams.Contains("tweet_mode")) {
     $extendedanswer = ""
     Do {
         $extendedanswer = Read-Host "Do you want tweets returned in extended mode? (Y/n)"
-        if(!$extendedanswer) { $extendedanswer = "Y"}
-    } While (!($extendedanswer.Equals("Y") -or $extendedanswer.Equals("n")))
+        if(!$extendedanswer -or $extendedanswer.Equals("y")) { $extendedanswer = "Y"}
+    } While (!($extendedanswer.Equals("Y") -or $extendedanswer.Equals("N") -or $extendedanswer.Equals("n")))
 
 }
 
