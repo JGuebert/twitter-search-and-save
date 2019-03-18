@@ -3,7 +3,7 @@
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
-## Requires Node.js server running at localhost:3000/sentimentScore to return score back from 'sentiment' npm module
+## Requires server/app.js running to return score back from 'sentiment' npm module
 
 # Configuration Variables
 
