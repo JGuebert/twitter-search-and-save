@@ -27,6 +27,8 @@ Run search.ps1 from either the directory where download.ps1 was run (containing 
 ### sentiment.ps1
 Run sentiment.ps1 from either a location containing an existing tweets directory to scan all tweets or pipe in the output from search.ps1 (using the -OutputAsArray switch) to display the sentiment scores of tweets.
 
+In order to run sentiment.ps1, the server/app.js Node application must be running to return a sentiment score. 
+
 **-MinSentiment** (required): The threshold for a tweet and its sentiment score to be displayed.
 
 **-PositiveOnly** or **-NegativeOnly**: Switches to indicate that only positive or negative sentiments should be displayed. If neither of these switches is set, both positive and negative will be output. 
