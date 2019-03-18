@@ -1,5 +1,5 @@
-﻿# twitter-search-and-save/analyze.ps1
-# Version: 0.3.2
+﻿# twitter-search-and-save/search.ps1
+# Version: 0.4-sentiment
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
