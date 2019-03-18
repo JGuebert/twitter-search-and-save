@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.5-extended-assistant
+# Version: 0.5
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
