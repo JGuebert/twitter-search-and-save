@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.5
+# Version: 0.5.1
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -24,9 +24,11 @@ If (!$queryparams.Contains("tweet_mode")) {
     $extendedanswer = ""
     Do {
         $extendedanswer = Read-Host "Do you want tweets returned in extended mode? (Y/n)"
-        if(!$extendedanswer -or $extendedanswer.Equals("y")) { $extendedanswer = "Y"}
+        if(!$extendedanswer -or $extendedanswer.Equals("y")) { $extendedanswer = "Y" }
     } While (!($extendedanswer.Equals("Y") -or $extendedanswer.Equals("N") -or $extendedanswer.Equals("n")))
 
+    # If user answered yes, add tweet_mode=extended to the query
+    If($extendedanswer.Equals("Y")) { $queryparams = $queryparams + "&tweet_mode=extended" }
 }
 
 while($maxrequests -lt 1) { [int]$maxrequests = Read-Host "Max number of API requests" }
@@ -35,7 +37,7 @@ while($maxrequests -lt 1) { [int]$maxrequests = Read-Host "Max number of API req
 # Initialize script variables
 $count = 0
 $nextquery = $queryparams
-$extendedmode = If ($queryparams.Contains("tweet_mode=extended") -or $extendedanswer.Equals("Y")) {$true} Else {$false}
+$extendedmode = If ($queryparams.Contains("tweet_mode=extended")) {$true} Else {$false}
 
 $bearerheader = "Bearer " + $bearertoken
 
@@ -62,5 +64,7 @@ Do
     $nextquery = If ($extendedmode) {$responsejson.search_metadata.next_results + "&tweet_mode=extended"} Else {$responsejson.search_metadata.next_results}
 
 } While (($responsejson.statuses.Count -gt 0) -and ($count -lt $maxrequests) -and ($nextquery))
+
+# Save the query parameters used to a query.txt file
 
 Compress-Archive -Path ".\tweets\*" -DestinationPath ".\output.zip"
