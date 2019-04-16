@@ -1,29 +1,28 @@
 ﻿# twitter-search-and-save/search.ps1
-# Version: 0.4
+# Version: 0.5-parameters
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
 param (
+    [parameter(Mandatory=$true)]    
+    [string]
+    $SearchString,
+    
+    [string]$ArchiveName,
+    
     [switch]$OutputAsArray
 );
-
-# Configuration Variables
-
-$search = "" # SET TO STRING TO SEARCH FOR IN TWEETS
-$archive = "" # PATH TO ZIP ARCHIVE
-
-
 
 ##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
 
 # Prompt user for input if not set in script
-if(!$search) { $search = Read-Host "Text to search" }
-if(!$archive) { $archive = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
+if(!$SearchString) { $SearchString = Read-Host "Text to search" }
+if(!$ArchiveName) { $ArchiveName = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
 
 # Expand the zip archive if provided
-if($archive) {
+if($ArchiveName) {
     Remove-Item -Path ".\tweets" -Recurse -ErrorAction Ignore
-    Expand-Archive -Path $archive -DestinationPath ".\tweets"
+    Expand-Archive -Path $ArchiveName -DestinationPath ".\tweets"
 }
 
 # Load the files from the tweets directory
@@ -32,7 +31,7 @@ $tweetfiles = Get-ChildItem -Path ".\tweets\tweets-*.json"
 foreach($file in $tweetfiles) {
     
     # Set the variable containing the text to search for
-    $scanfor = $search
+    $scanfor = $SearchString
     
     # Load the content of the file
     $content = Get-Content $file | ConvertFrom-Json
