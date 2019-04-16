@@ -16,7 +16,6 @@ param (
 ##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
 
 # Prompt user for input if not set in script
-if(!$SearchString) { $SearchString = Read-Host "Text to search" }
 if(!$ArchiveName) { $ArchiveName = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
 
 # Expand the zip archive if provided
