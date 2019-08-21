@@ -21,6 +21,8 @@ param (
     $MaxRequests
 );
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 # Set $ExtendedMode switch if user included tweet_mode=extended in query but did not set use switch when calling script
 If (!$QueryString.Contains("tweet_mode=extended")) { $ExtendedMode = $true }
 
