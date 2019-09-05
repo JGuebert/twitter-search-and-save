@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.6
+# Version: 0.6.1
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -24,7 +24,7 @@ param (
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Set $ExtendedMode switch if user included tweet_mode=extended in query but did not set use switch when calling script
-If (!$QueryString.Contains("tweet_mode=extended")) { $ExtendedMode = $true }
+If ($QueryString.Contains("tweet_mode=extended")) { $ExtendedMode = $true }
 
 # If $QueryString does not include tweet_mode and $ExtendedMode switch is not set, prompt user for if tweet_mode=extended should be used (with default of yes)
 If (!$QueryString.Contains("tweet_mode")) {
