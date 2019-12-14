@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/search.ps1
-# Version: 0.5
+# Version: 0.6-search-urls
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -53,7 +53,13 @@ foreach($file in $tweetfiles) {
 
             if($tweettext) {
                 if($OutputAsArray) { $outputarray += ,$tweettext }    
-                else { "Tweet from " + $status.user.screen_name + ": " + $tweettext }
+                else { 
+                    # Twitter URL is constructed as <username>/status/<tweet ID>
+                    $tweet_url = "https://twitter.com/" + $status.user.screen_name + "/status/" + $status.id_str
+                    "Tweet from " + $status.user.screen_name + ": " + $tweettext
+                    $tweet_url
+                    ""
+                }
             }
         }
 
