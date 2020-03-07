@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/search.ps1
-# Version: 0.6-search-urls
+# Version: 0.6
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
