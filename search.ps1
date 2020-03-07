@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/search.ps1
-# Version: 0.5
+# Version: 0.6
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -12,8 +12,6 @@ param (
     
     [switch]$OutputAsArray
 );
-
-##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
 
 # Prompt user for input if not set in script
 if(!$ArchiveName) { $ArchiveName = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
@@ -53,7 +51,13 @@ foreach($file in $tweetfiles) {
 
             if($tweettext) {
                 if($OutputAsArray) { $outputarray += ,$tweettext }    
-                else { "Tweet from " + $status.user.screen_name + ": " + $tweettext }
+                else { 
+                    # Twitter URL is constructed as <username>/status/<tweet ID>
+                    $tweet_url = "https://twitter.com/" + $status.user.screen_name + "/status/" + $status.id_str
+                    "Tweet from " + $status.user.screen_name + ": " + $tweettext
+                    $tweet_url
+                    ""
+                }
             }
         }
 
