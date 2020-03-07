@@ -13,8 +13,6 @@ param (
     [switch]$OutputAsArray
 );
 
-##### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
-
 # Prompt user for input if not set in script
 if(!$ArchiveName) { $ArchiveName = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
 
