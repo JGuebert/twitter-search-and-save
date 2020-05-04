@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.6.1
+# Version: 0.6.2
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -70,7 +70,7 @@ Do
     # Write the content returned to a file
     $responsejson = $response.Content | ConvertFrom-Json
     $filepath = $outputpath + "\tweets-" + $count + "-" + $responsejson.search_metadata.max_id + ".json"
-    Out-File $filepath -InputObject $response.Content
+    Out-File $filepath -InputObject $response.Content -Encoding UTF8
 
     # Increment $count for the next time
     $count++
@@ -81,6 +81,6 @@ Do
 } While (($responsejson.statuses.Count -gt 0) -and ($count -lt $MaxRequests) -and ($nextquery))
 
 # Save the query parameters used to a query.txt file
-Out-File "$outputpath\query.txt" -InputObject $QueryString
+Out-File "$outputpath\query.txt" -InputObject $QueryString -Encoding UTF8
 
 Compress-Archive -Path "$outputpath\*" -DestinationPath ".\$OutputName.zip"
