@@ -1,5 +1,5 @@
 tweets*.json
 tweets/
-output.zip
+*.zip
 node_modules
 .vscode
