@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.6.3-basic-parsing
+# Version: 0.6.3
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
