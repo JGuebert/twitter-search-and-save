@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.6.2
+# Version: 0.6.3-basic-parsing
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -65,7 +65,7 @@ Do
     # Get the data from the API
     $baseuri = "https://api.twitter.com/1.1/search/tweets.json"
     $requesturi = $baseuri + $nextquery
-    $response = Invoke-WebRequest -Uri $requesturi -Headers @{Authorization=$bearerheader}
+    $response = Invoke-WebRequest -Uri $requesturi -Headers @{Authorization=$bearerheader} -UseBasicParsing
     
     # Write the content returned to a file
     $responsejson = $response.Content | ConvertFrom-Json
