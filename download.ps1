@@ -1,5 +1,5 @@
 ﻿# twitter-search-and-save/download.ps1
-# Version: 0.6.3
+# Version: 0.7-merge
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
@@ -49,7 +49,8 @@ If (!$QueryString.Contains("tweet_mode")) {
 
 # Initialize script variables
 $count = 0
-$nextquery = $QueryString
+$outputcount = 0
+$since_id = ""
 
 $bearerheader = "Bearer " + $BearerToken
 
@@ -58,6 +59,21 @@ $outputpath = ".\" + $OutputName
 
 # Create directory for output JSON to be stored in, direct output to $null so it doesn't appear in console
 New-Item -ItemType Directory -Force -Path $outputpath > $null
+
+# If directory already has content in it, figure out where we need to start $outputcount from
+$existingcontent = Get-ChildItem -Path $outputpath -Name -Include tweets-*.json
+If ($existingcontent) {
+    Write-Host "Found existing content in directory, refreshing previous query"
+    $outputcount = [int]( $existingcontent | Select-String -Pattern "tweets-(\d+)-" | Foreach-Object { $_.Matches[0].Groups[1].Value } | Sort-Object {[int]$_})[-1] + 1 
+    $maxid = ($existingcontent | Select-String -Pattern "tweets-\d+-(\d+)" | Foreach-Object { $_.Matches[0].Groups[1].Value } | Sort-Object {[int64]$_})[-1]
+    $since_id = "&since_id=" + $maxid
+    $QueryString = $QueryString + $since_id
+    Write-Host "Getting tweets newer than $maxid"
+    #$lastoutput = Get-Item -Path $outputpath -Include "tweets-$outputcount*" | ConvertFrom-Json
+    #$nextquery = If ($ExtendedMode) {$lastoutput.search_metadata.next_results + "&tweet_mode=extended"} Else {$lastoutput.search_metadata.next_results}
+}
+
+$nextquery = $QueryString
 
 Do
 {
@@ -69,18 +85,19 @@ Do
     
     # Write the content returned to a file
     $responsejson = $response.Content | ConvertFrom-Json
-    $filepath = $outputpath + "\tweets-" + $count + "-" + $responsejson.search_metadata.max_id + ".json"
+    $filepath = $outputpath + "\tweets-" + $outputcount + "-" + $responsejson.search_metadata.max_id + ".json"
     Out-File $filepath -InputObject $response.Content -Encoding UTF8
 
-    # Increment $count for the next time
+    # Increment $count and $outputcount for the next time
     $count++
+    $outputcount++
 
     # Figure out what the next query needs to be to get the next set of older tweets
-    $nextquery = If ($ExtendedMode) {$responsejson.search_metadata.next_results + "&tweet_mode=extended"} Else {$responsejson.search_metadata.next_results}
+    $nextquery = If ($ExtendedMode) {$responsejson.search_metadata.next_results + "&tweet_mode=extended" + $since_id} Else {$responsejson.search_metadata.next_results  + $since_id}
 
 } While (($responsejson.statuses.Count -gt 0) -and ($count -lt $MaxRequests) -and ($nextquery))
 
 # Save the query parameters used to a query.txt file
 Out-File "$outputpath\query.txt" -InputObject $QueryString -Encoding UTF8
 
-Compress-Archive -Path "$outputpath\*" -DestinationPath ".\$OutputName.zip"
+Compress-Archive -Path "$outputpath\*" -DestinationPath ".\$OutputName.zip" -Update
