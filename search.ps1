@@ -1,29 +1,32 @@
 ﻿# twitter-search-and-save/search.ps1
-# Version: 0.6
+# Version: 0.7-docker-sentiment
 # License: MIT
 # Website: https://github.com/JGuebert/twitter-search-and-save
 
-param (
-    [parameter(Mandatory=$true)]    
+param (    
     [string]
     $SearchString,
+
+    [string]
+    $TweetPath,
     
     [string]$ArchiveName,
-    
+
     [switch]$OutputAsArray
 );
 
 # Prompt user for input if not set in script
-if(!$ArchiveName) { $ArchiveName = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
+if(!$ArchiveName -and !$TweetPath) { $ArchiveName = Read-Host "Path to zip archive, or leave blank to use existing tweets directory" }
 
 # Expand the zip archive if provided
 if($ArchiveName) {
     Remove-Item -Path ".\tweets" -Recurse -ErrorAction Ignore
     Expand-Archive -Path $ArchiveName -DestinationPath ".\tweets"
+    $tweetfiles = Get-ChildItem -Path ".\tweets\tweets-*.json"
 }
-
-# Load the files from the tweets directory
-$tweetfiles = Get-ChildItem -Path ".\tweets\tweets-*.json"
+else {
+    $tweetfiles = Get-ChildItem -Path "$TweetPath\tweets-*.json"
+}
 
 foreach($file in $tweetfiles) {
     
